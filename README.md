@@ -19,6 +19,7 @@ This GitHub Action copies a file from the current repository to a location in an
             API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
           with:
             source_file: 'test2.md'
+            delete_source_file: true
             destination_repo: 'dmnemec/release-test'
             destination_folder: 'test-dir'
             user_email: 'example@email.com'
@@ -30,6 +31,7 @@ This GitHub Action copies a file from the current repository to a location in an
 The `API_TOKEN_GITHUB` needs to be set in the `Secrets` section of your repository options. You can retrieve the `API_TOKEN_GITHUB` [here](https://github.com/settings/tokens) (set the `repo` permissions).
 
 * source_file: The file or directory to be moved. Uses the same syntax as the `rsync` command. Incude the path for any files not in the repositories root directory.
+* delete_source_file: Delete source file from the origin directory after copy.
 * destination_repo: The repository to place the file or directory in.
 * destination_folder: [optional] The folder in the destination repository to place the file in, if not the root directory.
 * user_email: The GitHub user email associated with the API token secret.

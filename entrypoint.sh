@@ -72,3 +72,11 @@ then
 else
   echo "No changes detected"
 fi
+
+if [ "$INPUT_DELETE_SOURCE_FILE" = "true" ]
+then
+  echo "Making sure the input files are destroyed."
+  rm -rf "$INPUT_SOURCE_FILE"
+fi
+
+

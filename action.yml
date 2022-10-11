@@ -16,6 +16,10 @@ inputs:
   user_name:
     description: 'GitHub username for the commit'
     required: true
+  delete_source_file:
+    description: 'Delete source file from the origin directory after copy'
+    required: false
+    default: false
   destination_branch:
     description: 'branch to push file to, defaults to main'
     required: false
@@ -35,11 +39,13 @@ inputs:
     description: 'Git server host, default github.com'
     required: false
     default: github.com
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.source-file }}
+    - ${{ inputs.delete-source-file }}
     - ${{ inputs.destination-repo }}
     - ${{ inputs.destination-folder }}
     - ${{ inputs.user-email }}
@@ -49,6 +55,7 @@ runs:
     - ${{ inputs.git-server }}
     - ${{ inputs.rename }}
     - ${{ inputs.use-rsync }}
+    
 branding:
   icon: 'git-commit'
   color: 'green'

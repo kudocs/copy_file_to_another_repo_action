@@ -62,13 +62,23 @@ then
   INPUT_COMMIT_MESSAGE="Update from https://$INPUT_GIT_SERVER/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
 fi
 
+push_code_coverage () {
+  echo "Pushing git commit"
+  git push -u origin HEAD:"$OUTPUT_BRANCH" &> /dev/null
+  if [ $? != 0 ] ; then
+    git pull --rebase
+    echo "Git push failed. Retrying..."
+    push_code_coverage
+  fi
+}
+
 echo "Adding git commit"
 git add .
+
 if git status | grep -q "Changes to be committed"
 then
   git commit --message "$INPUT_COMMIT_MESSAGE"
-  echo "Pushing git commit"
-  git push -u origin HEAD:"$OUTPUT_BRANCH"
+  push_code_coverage
 else
   echo "No changes detected"
 fi

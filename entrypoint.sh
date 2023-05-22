@@ -64,7 +64,7 @@ fi
 
 push_code_coverage () {
   echo "Pushing git commit"
-  git push -u origin HEAD:"$OUTPUT_BRANCH" &> /dev/null
+  git push -u origin HEAD:"$OUTPUT_BRANCH"
   if [ $? != 0 ] ; then
     git pull --rebase
     echo "Git push failed. Retrying..."

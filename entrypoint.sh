@@ -37,18 +37,24 @@ else
   DEST_COPY="$CLONE_DIR/$INPUT_DESTINATION_FOLDER"
 fi
 
-echo "Making sure the destination file does not exist or folder is empty."
-rm -rf "$DEST_COPY/$INPUT_SOURCE_FILE"
+# str is read into an array as tokens separated by IFS
+#files=($(echo "$INPUT_SOURCE_FILE" | tr "," "\n"))
 
-echo "Copying contents to git repo"
-mkdir -p $CLONE_DIR/$INPUT_DESTINATION_FOLDER
-if [ -z "$INPUT_USE_RSYNC" ]
-then
-  cp -R "$INPUT_SOURCE_FILE" "$DEST_COPY"
-else
-  echo "rsync mode detected"
-  rsync -avrh "$INPUT_SOURCE_FILE" "$DEST_COPY"
-fi
+#echo each of the value to output
+#for value in "${files[@]}"; do
+  echo "Making sure the destination file does not exist or folder is empty."
+  rm -rf "$DEST_COPY/$INPUT_SOURCE_FILE"
+
+  echo "Copying contents to git repo"
+  mkdir -p $CLONE_DIR/$INPUT_DESTINATION_FOLDER
+  if [ -z "$INPUT_USE_RSYNC" ]
+  then
+    cp -R "$INPUT_SOURCE_FILE" "$DEST_COPY"
+  else
+    echo "rsync mode detected"
+    rsync -avrh "$INPUT_SOURCE_FILE" "$DEST_COPY"
+  fi
+#done
 
 cd "$CLONE_DIR"
 

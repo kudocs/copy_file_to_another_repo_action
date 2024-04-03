@@ -72,13 +72,19 @@ then
 fi
 
 push_code_coverage () {
-  echo "Pushing git commit"
-  git push -u origin HEAD:"$OUTPUT_BRANCH"
-  if [ $? != 0 ] ; then
-    git pull --rebase
-    echo "Git push failed. Retrying..."
-    push_code_coverage
-  fi
+  local retries=3 # Maximum number of attempts
+  for ((attempt=1; attempt <= retries; attempt++)); do
+    echo "Attempt $attempt of $retries: Pushing git commit..."
+    git push -u origin HEAD:"$OUTPUT_BRANCH" && return 0 # Success
+    echo "Push failed. Attempting to resolve..."
+    git pull --rebase # Attempt to rebase
+    if [ $? -ne 0 ]; then
+      echo "Rebase failed. Please resolve any conflicts manually."
+      return 1 # Exit if rebase fails
+    fi
+  done
+  echo "Push failed after $retries attempts."
+  return 1
 }
 
 echo "Adding git commit"
